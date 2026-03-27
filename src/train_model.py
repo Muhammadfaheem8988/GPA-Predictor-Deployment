@@ -4,9 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import joblib
 
-# =========================
-# Step 1: Generate mock data
-# =========================
+
 np.random.seed(42)
 data = pd.DataFrame({
     'study_hours': np.random.randint(5, 40, 100),
@@ -15,7 +13,7 @@ data = pd.DataFrame({
     'sleep_hours': np.random.randint(4, 10, 100)
 })
 
-# Create GPA with noise
+# Creating GPA with noise
 data['GPA'] = (
     0.02 * data['study_hours'] +
     0.01 * data['IQ'] +
