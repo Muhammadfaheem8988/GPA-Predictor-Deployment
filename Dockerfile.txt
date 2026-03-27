@@ -1,0 +1,32 @@
+# =====================
+# Dockerfile for Render
+# =====================
+
+# Use official Python 3.10 slim image
+FROM python:3.10-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy all project files
+COPY . .
+
+# Upgrade pip and install dependencies
+RUN python -m pip install --upgrade pip
+RUN pip install --no-cache-dir \
+    numpy==1.25.0 \
+    pandas==2.1.1 \
+    scikit-learn==1.3.2 \
+    fastapi==0.111.1 \
+    uvicorn==0.23.2 \
+    joblib==1.3.2 \
+    pydantic==2.7.0
+
+# Train the model (ensures GPA clipped)
+RUN python train_model.py
+
+# Expose port 10000 for Render
+EXPOSE 10000
+
+# Start FastAPI server on Render's assigned PORT
+CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port ${PORT:-10000}"]

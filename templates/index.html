@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GPA Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: rgba(0,0,0,0.6);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 350px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+        }
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #ff9800;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e68900;
+        }
+        h2 { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>GPA Predictor</h2>
+        <input type="number" id="study_hours" placeholder="Study Hours (per week)">
+        <input type="number" id="IQ" placeholder="IQ">
+        <input type="number" id="attendance" placeholder="Attendance (%)">
+        <input type="number" id="sleep_hours" placeholder="Sleep Hours (per day)">
+        <button onclick="predictGPA()">Predict GPA</button>
+        <h3 id="result"></h3>
+    </div>
+
+    <script>
+        async function predictGPA() {
+            const data = {
+                study_hours: parseFloat(document.getElementById('study_hours').value),
+                IQ: parseFloat(document.getElementById('IQ').value),
+                attendance: parseFloat(document.getElementById('attendance').value),
+                sleep_hours: parseFloat(document.getElementById('sleep_hours').value)
+            };
+
+            const response = await fetch('/predict_gpa', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = "Predicted GPA: " + result.predicted_GPA;
+        }
+    </script>
+</body>
+</html>
